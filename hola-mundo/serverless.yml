@@ -1,0 +1,13 @@
+service: hola-mundo
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+
+functions:
+  hello-world:
+    handler: handler.hello
+    events:
+      - http:
+          path: hello
+          method: GET
