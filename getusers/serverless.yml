@@ -1,0 +1,23 @@
+service: crud-serverless-users
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.11
+
+plugins:
+  - serverless-offline
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+
+functions:
+  get-users:
+    handler: handler.get_users
+    events:
+      - httpApi:
+          path: /users
+          method: get
+
