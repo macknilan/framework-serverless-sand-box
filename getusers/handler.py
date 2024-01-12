@@ -1,22 +1,29 @@
 import json
 from datetime import datetime
+from typing import Any
 
 import boto3
+from boto3.dynamodb.conditions import Key
+
+
+def dynamo_table_name(t: str) -> Any:
+    """
+    FUNCIÓN PARA SELECCIONAR LA TABLA EN DYNAMODB
+    """
+    _DYNAMODB = boto3.resource("dynamodb", region_name="localhost", endpoint_url="http://localhost:8000")
+    _table_selected = _DYNAMODB.Table(t)
+
+    return _table_selected
 
 
 def get_users(event, context):
-    year = datetime.now().year
-    month = datetime.now().month
-    day = datetime.now().day
-    hour = datetime.now().hour
-    minute = datetime.now().minute
-    second = datetime.now().second
+    """
+    FUNCIÓN PARA OBTENER LOS USUARIOS DE LA TABLA USERS
+    """
 
-    body = {
-        "message": f"Go Serverless v3.0! Your function executed successfully! {year}/{month}/{day} {hour}:{minute}:{second}",
-        "input": event,
-    }
+    table_users_get = dynamo_table_name("usersTable")
 
-    response = {"statusCode": 200, "body": json.dumps(body)}
+    response = table_users_get.query(KeyConditionExpression=Key("pk").eq("1"))
+    result = response["Items"]
 
-    return response
+    return {"statusCode": 200, "body": json.dumps(result)}
