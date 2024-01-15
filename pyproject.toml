@@ -10,7 +10,7 @@ extend-select = [
     "I"
 ]
 show-fixes = true
-line-length = 120
+line-length = 88
 
 # Assume Python 3.11.7
 target-version = "py311"
